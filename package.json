@@ -1,9 +1,0 @@
-{
-  "name": "IngressPeBot",
-  "version": "1.0.0",
-  "description": "Bot Ingress PE",
-  "main": "ingresspebot.js",
-  "author": "amoquillaza",
-  "license": "MIT"
-}
-
