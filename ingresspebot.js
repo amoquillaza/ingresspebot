@@ -1,6 +1,7 @@
 const TelegramBot = require('node-telegram-bot-api');
 const token = require('./token');
 const bot = new TelegramBot(token, {polling: true});
+
 const proxfsfecha="2020-02-01";
 const proxfslugar="Por definir";
 const proxeventonombre="Perpetua Hexathlon";
@@ -15,10 +16,10 @@ bot.on('message', function(msg){
 
 if (msg.text.toString().toUpperCase() === "/START"){
     bot.sendMessage(chatId, "Hola, " + username + " soy un bot y mi nombre es IngressPEBot");
-    bot.sendMessage(chatId, "Comandos disponibles: /evento /fs /meme");
+    bot.sendMessage(chatId, "Comandos disponibles: /evento /fs /meme ");
 } else if (msg.text.toString().toUpperCase() === "/EVENTO"){
 	var date_1 = new Date();
-    var date_2 = new Date(proxfsfecha);
+    var date_2 = new Date(proxeventofecha);
     var diff_in_sec = (date_2 - date_1)/1000;
     bot.sendMessage(chatId, "Datos del proximo evento:");
     bot.sendMessage(chatId, "Nombre: " + proxeventonombre + " Lugar: " + proxeventolugar + " Fecha: " + proxeventofecha + ". Faltan " + ddhhmmss(diff_in_sec));
