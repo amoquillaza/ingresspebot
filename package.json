@@ -1,0 +1,25 @@
+{
+  "name": "ingresspebot",
+  "version": "1.0.0",
+  "description": "Ingress Bot PE",
+  "main": "ingresspebot.js",
+  "scripts": {
+    "start": "node ingresspebot.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amoquillaza/ingresspebot.git"
+  },
+  "keywords": [
+    "telegram"
+  ],
+  "author": "amoquillaza",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/amoquillaza/ingresspebot/issues"
+  },
+  "homepage": "https://github.com/amoquillaza/ingresspebot#readme",
+  "dependencies": {
+    "node-telegram-bot-api": "^0.40.0"
+  }
+}
