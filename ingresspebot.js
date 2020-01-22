@@ -1,4 +1,5 @@
 const TelegramBot = require('node-telegram-bot-api');
+const weather = require('weather-js');
 const token = require('./token');
 const bot = new TelegramBot(token, {polling: true});
 
@@ -8,19 +9,22 @@ const proxeventonombre="Perpetua Hexathlon";
 const proxeventofecha="2020-02-29";
 const proxeventolugar="Lima";
 const proxeventolink="https://community.ingress.com/en/discussion/8367/perpetua-hexathlon-event-detail-updates";
+const urlevento = 'https://us.v-cdn.net/6031689/uploads/208/SBI6RXVNX0WR.jpg';
 
 bot.on('message', function(msg){
     console.log(msg);
     var chatId = msg.chat.id;
     var username = msg.from.username;
-
+ 
 if (msg.text.toString().toUpperCase() === "/START"){
     bot.sendMessage(chatId, "Hola, " + username + " soy un bot y mi nombre es IngressPEBot");
-    bot.sendMessage(chatId, "Comandos disponibles: /evento /fs /meme ");
+    bot.sendMessage(chatId, "Comandos disponibles:\n"+"/evento\n"+"/fs\n"+"/meme\n"+"/ubicacion\n"+"/tiempo\n"+" ");
 } else if (msg.text.toString().toUpperCase() === "/EVENTO"){
 	var date_1 = new Date();
     var date_2 = new Date(proxeventofecha);
-    var diff_in_sec = (date_2 - date_1)/1000;
+	//48600 es 13:30 del día del evento
+    var diff_in_sec = ((date_2 - date_1)/1000 + 48600);
+    bot.sendPhoto(chatId, urlevento);	
     bot.sendMessage(chatId, "Datos del proximo evento:");
     bot.sendMessage(chatId, "Nombre: " + proxeventonombre + " Lugar: " + proxeventolugar + " Fecha: " + proxeventofecha + ". Faltan " + ddhhmmss(diff_in_sec));
     bot.sendMessage(chatId, "Mas informacion: " + proxeventolink);
@@ -31,11 +35,55 @@ if (msg.text.toString().toUpperCase() === "/START"){
    bot.sendMessage(chatId, "Datos de proximo FS: Fecha: " + proxfsfecha + " Lugar: " + proxfslugar + ". Faltan " + ddhhmmss(diff_in_sec));
 } else if (msg.text.toString().toUpperCase() === "/MEME"){
     bot.sendMessage(chatId, "Con el memero anonimo contactarte debes...");
+} else if (msg.text.toString().toUpperCase() === "/TIEMPO"){
+	bot.sendMessage(chatId, "Consultando el tiempo atmosferico para Lima,PE...");
+//    var ciudad = match[1];
+    var ciudad = "Lima,PE";
+	var opciones = {
+      search: ciudad, // lugar es la ciudad que el usuario introduce
+      degreeType: 'C', // Celsius
+      lang: 'es-ES' // Lenguaje en el que devolverá los datos
+    }
+    weather.find(opciones, function(err, result){
+
+        if (err){ // Si ocurre algun error...
+            console.log(err); // ... nos lo muestra en pantalla
+
+        } else {
+            console.log(result[0]); // Visualizamos el primer resultado del array
+            
+            bot.sendMessage(chatId, "Lugar: " + result[0].location.name +
+            "\n\nTemperatura: " + result[0].current.temperature + "ºC\n" +
+            "Visibilidad: " + result[0].current.skytext + "\n" +
+            "Humedad: " + result[0].current.humidity + "%\n" +
+            "Dirección del viento: " + result[0].current.winddisplay + "\n"
+            ,{parse_mode: 'Markdown'});
+
+        }
+    })	
+} else if (msg.text.toString().toUpperCase() === "/UBICACION"){
+  const opts = {
+    reply_markup: JSON.stringify({
+      keyboard: [
+        [{text: 'Coordenadas', request_location: true}],
+      ],
+      resize_keyboard: true,
+      one_time_keyboard: true,
+    }),
+  };
+  bot.sendMessage(chatId, 'Solicitando ubicacion (GPS)', opts);	
 } else {
     bot.sendMessage(chatId, 'Mensaje recibido. Si no has recibido la respuesta esperada, puedes reportarlo.');
 }
 
+});
 
+//no entra aquí, todo se resuelve en /UBICACION
+bot.on('location', (msg) => {
+  console.log(msg);	
+  var chatId = msg.chat.id;
+  var username = msg.from.username;
+  bot.sendMessage(chatId, "Tus Coordenadas son las siguientes:\n" + "Lat: " + msg.location.latitude + " Lon: " + msg.location.longitude + "\n");  
 });
 
 function ddhhmmss (seconds) {

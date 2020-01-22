@@ -20,6 +20,8 @@
   },
   "homepage": "https://github.com/amoquillaza/ingresspebot#readme",
   "dependencies": {
-    "node-telegram-bot-api": "^0.40.0"
+    "node-telegram-bot-api": "^0.40.0",
+    "text-to-picture": "^1.0.0",
+    "weather-js": "^2.0.0"
   }
 }
