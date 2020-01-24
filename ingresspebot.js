@@ -1,6 +1,9 @@
 const TelegramBot = require('node-telegram-bot-api');
 const weather = require('weather-js');
 const token = require('./token');
+const septicycl=require('./septicycl');
+
+//inicializar bot
 const bot = new TelegramBot(token, {polling: true});
 
 const proxfsfecha="2020-02-01";
@@ -18,7 +21,7 @@ bot.on('message', function(msg){
  
 if (msg.text.toString().toUpperCase() === "/START"){
     bot.sendMessage(chatId, "Hola, " + username + " soy un bot y mi nombre es IngressPEBot");
-    bot.sendMessage(chatId, "Comandos disponibles:\n"+"/evento\n"+"/fs\n"+"/meme\n"+"/ubicacion\n"+"/tiempo\n"+" ");
+    bot.sendMessage(chatId, "Comandos disponibles:\n"+"/evento\n"+"/ciclo\n"+"/fs\n"+"/meme\n"+"/ubicacion\n"+"/tiempo\n"+" ");
 } else if (msg.text.toString().toUpperCase() === "/EVENTO"){
 	var date_1 = new Date();
     var date_2 = new Date(proxeventofecha);
@@ -35,6 +38,17 @@ if (msg.text.toString().toUpperCase() === "/START"){
    bot.sendMessage(chatId, "Datos de proximo FS: Fecha: " + proxfsfecha + " Lugar: " + proxfslugar + ". Faltan " + ddhhmmss(diff_in_sec));
 } else if (msg.text.toString().toUpperCase() === "/MEME"){
     bot.sendMessage(chatId, "Con el memero anonimo contactarte debes...");
+} else if (msg.text.toString().toUpperCase() === "/CICLO"){
+    const [jsonresponse, hora, fecha] = septicycl.init();
+    const cycle = jsonresponse.cycle;
+    const checkpoints = jsonresponse.checkpoints;
+    bot.sendMessage(chatId, "Siendo las " + hora + " " + fecha + ", estamos en el ciclo " + cycle);
+    bot.sendMessage(chatId,"Proximos checkpoints:");
+    for(var i=0;i<checkpoints.length;i++){
+    	if(checkpoints[i].classes=='next'||checkpoints[i].classes=='upcoming'){
+   	       bot.sendMessage(chatId,"Fecha: " + checkpoints[i].date + ". Hora: " + checkpoints[i].time);
+	    }    
+    }
 } else if (msg.text.toString().toUpperCase() === "/TIEMPO"){
 	bot.sendMessage(chatId, "Consultando el tiempo atmosferico para Lima,PE...");
 //    var ciudad = match[1];
