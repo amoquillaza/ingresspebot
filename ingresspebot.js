@@ -42,13 +42,14 @@ if (msg.text.toString().toUpperCase() === "/START"){
     const [jsonresponse, hora, fecha] = septicycl.init();
     const cycle = jsonresponse.cycle;
     const checkpoints = jsonresponse.checkpoints;
-    bot.sendMessage(chatId, "Siendo las " + hora + " " + fecha + ", estamos en el ciclo " + cycle);
-    bot.sendMessage(chatId,"Proximos checkpoints:");
+    bot.sendMessage(chatId, "Siendo las " + hora + " " + fecha + ", estamos en el ciclo " + cycle + ".\nProximos checkpoints:");
+	var checks="";
     for(var i=0;i<checkpoints.length;i++){
     	if(checkpoints[i].classes=='next'||checkpoints[i].classes=='upcoming'){
-   	       bot.sendMessage(chatId,"Fecha: " + checkpoints[i].date + ". Hora: " + checkpoints[i].time);
+   	       checks+="Fecha: " + checkpoints[i].date + ". Hora: " + checkpoints[i].time + ".\n";
 	    }    
     }
+	bot.sendMessage(chatId,checks);
 } else if (msg.text.toString().toUpperCase() === "/TIEMPO"){
 	bot.sendMessage(chatId, "Consultando el tiempo atmosferico para Lima,PE...");
 //    var ciudad = match[1];
