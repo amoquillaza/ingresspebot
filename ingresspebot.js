@@ -20,36 +20,45 @@ bot.on('message', function(msg){
     var username = msg.from.username;
  
 if (msg.text.toString().toUpperCase() === "/START"){
-    bot.sendMessage(chatId, "Hola, " + username + " soy un bot y mi nombre es IngressPEBot");
-    bot.sendMessage(chatId, "Comandos disponibles:\n"+"/evento\n"+"/ciclo\n"+"/fs\n"+"/meme\n"+"/ubicacion\n"+"/tiempo\n"+" ");
+    var msgSTART="";
+    msgSTART+="Hola, " + username + " soy un bot y mi nombre es IngressPEBot\n";
+    msgSTART+="Comandos disponibles:\n"+"/evento\n"+"/ciclo\n"+"/fs\n"+"/meme\n"+"/ubicacion\n"+"/tiempo\n";
+	bot.sendMessage(chatId,msgSTART);
 } else if (msg.text.toString().toUpperCase() === "/EVENTO"){
 	var date_1 = new Date();
     var date_2 = new Date(proxeventofecha);
 	//48600 es 13:30 del día del evento
     var diff_in_sec = ((date_2 - date_1)/1000 + 48600);
+    var msgEVENTO="";  
     bot.sendPhoto(chatId, urlevento);	
-    bot.sendMessage(chatId, "Datos del proximo evento:");
-    bot.sendMessage(chatId, "Nombre: " + proxeventonombre + " Lugar: " + proxeventolugar + " Fecha: " + proxeventofecha + ". Faltan " + ddhhmmss(diff_in_sec));
-    bot.sendMessage(chatId, "Mas informacion: " + proxeventolink);
+	msgEVENTO+="Datos del proximo evento:\n";
+    msgEVENTO+="Nombre: " + proxeventonombre + " Lugar: " + proxeventolugar + " Fecha: " + proxeventofecha + ". Faltan " + ddhhmmss(diff_in_sec)+"\n";
+    msgEVENTO+="Mas informacion: " + proxeventolink;
+	bot.sendMessage(chatId,msgEVENTO);
+
 } else if (msg.text.toString().toUpperCase() === "/FS"){
 	var date_1 = new Date();
     var date_2 = new Date(proxfsfecha);
     var diff_in_sec = (date_2 - date_1)/1000;
    bot.sendMessage(chatId, "Datos de proximo FS: Fecha: " + proxfsfecha + " Lugar: " + proxfslugar + ". Faltan " + ddhhmmss(diff_in_sec));
+
 } else if (msg.text.toString().toUpperCase() === "/MEME"){
     bot.sendMessage(chatId, "Con el memero anonimo contactarte debes...");
+	
 } else if (msg.text.toString().toUpperCase() === "/CICLO"){
     const [jsonresponse, hora, fecha] = septicycl.init();
     const cycle = jsonresponse.cycle;
     const checkpoints = jsonresponse.checkpoints;
-    bot.sendMessage(chatId, "Siendo las " + hora + " " + fecha + ", estamos en el ciclo " + cycle + ".\nProximos checkpoints:");
-	var checks="";
+	var msgCICLO="";
+    msgCICLO+="Siendo las " + hora + " " + fecha + ", estamos en el ciclo " + cycle + ".\nProximos checkpoints:\n";
+	//!!!falta un IF en caso no se reciban datos
     for(var i=0;i<checkpoints.length;i++){
     	if(checkpoints[i].classes=='next'||checkpoints[i].classes=='upcoming'){
-   	       checks+="Fecha: " + checkpoints[i].date + ". Hora: " + checkpoints[i].time + ".\n";
+   	       msgCICLO+="Fecha: " + checkpoints[i].date + ". Hora: " + checkpoints[i].time + ".\n";
 	    }    
     }
-	bot.sendMessage(chatId,checks);
+	bot.sendMessage(chatId,msgCICLO);
+	
 } else if (msg.text.toString().toUpperCase() === "/TIEMPO"){
 	bot.sendMessage(chatId, "Consultando el tiempo atmosferico para Lima,PE...");
 //    var ciudad = match[1];
@@ -76,6 +85,7 @@ if (msg.text.toString().toUpperCase() === "/START"){
 
         }
     })	
+	
 } else if (msg.text.toString().toUpperCase() === "/UBICACION"){
   const opts = {
     reply_markup: JSON.stringify({
