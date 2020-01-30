@@ -2,6 +2,7 @@ const TelegramBot = require('node-telegram-bot-api');
 const weather = require('weather-js');
 const token = require('./token');
 const septicycl=require('./septicycl');
+const msgFS = require('./msg-fs');
 
 //inicializar bot
 const bot = new TelegramBot(token, {polling: true});
@@ -37,11 +38,12 @@ if (msg.text.toString().toUpperCase() === "/START"){
 	bot.sendMessage(chatId,msgEVENTO);
 
 } else if (msg.text.toString().toUpperCase() === "/FS"){
-	var date_1 = new Date();
-    var date_2 = new Date(proxfsfecha);
-    var diff_in_sec = (date_2 - date_1)/1000;
-   bot.sendMessage(chatId, "Datos de proximo FS: Fecha: " + proxfsfecha + " Lugar: " + proxfslugar + ". Faltan " + ddhhmmss(diff_in_sec));
-
+// Se define mensaje para FS
+//	 var date_1 = new Date();
+//   var date_2 = new Date(proxfsfecha);
+//   var diff_in_sec = (date_2 - date_1)/1000;
+//   bot.sendMessage(chatId, "Datos de proximo FS: Fecha: " + proxfsfecha + " Lugar: " + proxfslugar + ". Faltan " + ddhhmmss(diff_in_sec));
+   bot.sendMessage(chatId, msgFS); 
 } else if (msg.text.toString().toUpperCase() === "/MEME"){
     bot.sendMessage(chatId, "Con el memero anonimo contactarte debes...");
 	
