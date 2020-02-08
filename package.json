@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/amoquillaza/ingresspebot#readme",
   "dependencies": {
+    "cron": "^1.8.2",
     "moment": "^2.24.0",
     "node-telegram-bot-api": "^0.40.0",
     "text-to-picture": "^1.0.0",
