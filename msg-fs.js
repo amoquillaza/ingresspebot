@@ -12,4 +12,5 @@ module.exports = "El proximo #IngressFS se realizara el 1 de febrero. Pueden par
 +"\n\n **Puno**\n Ovalo Ramon Castilla, 2 pm\n ENL @RubenReaper  RES linocallata"
 +"\n\n **Tarapoto**\n Plaza de Armas de Tarapoto, 3 pm\n ENL @michelosan93  RES @ajotamedic"
 +"\n\n **Trujillo**\n Ovalo Larco, 3:30 pm\n ENL anaclaucc  RES @WolfCommand"
-+"\n\n #IFSPeru"
++"\n\n(Todas las tildes omitidas)"
++"\n\n#IFSPeru"

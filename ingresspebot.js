@@ -55,7 +55,7 @@ if (msg.text.toString().toUpperCase() === "/START"){
     msgCICLO+="Siendo las " + hora + " " + fecha + ", estamos en el ciclo " + cycle + ".\nProximos checkpoints:\n";
 	//!!!falta un IF en caso no se reciban datos
     for(var i=0;i<checkpoints.length;i++){
-    	if(checkpoints[i].classes=='next'||checkpoints[i].classes=='upcoming'){
+    	if(checkpoints[i].classes=='next'||checkpoints[i].classes=='upcoming'||checkpoints[i].classes=='upcoming final'){
    	       msgCICLO+="Fecha: " + checkpoints[i].date + ". Hora: " + checkpoints[i].time + ".\n";
 	    }    
     }
