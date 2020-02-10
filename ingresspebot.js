@@ -56,7 +56,7 @@ if (msg.text.toString().toUpperCase() === "/START"){
 	//!!!falta un IF en caso no se reciban datos
     for(var i=0;i<checkpoints.length;i++){
     	if(checkpoints[i].classes=='next'||checkpoints[i].classes=='upcoming'||checkpoints[i].classes=='upcoming final'){
-   	       msgCICLO+="Fecha: " + checkpoints[i].date + ". Hora: " + checkpoints[i].time + ".\n";
+   	       msgCICLO+="CP" + (i+1) + ": Fecha: " + checkpoints[i].date + " Hora: " + checkpoints[i].time + ".\n";
 	    }    
     }
 	bot.sendMessage(chatId,msgCICLO);

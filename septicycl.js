@@ -61,6 +61,8 @@ const moment = require('moment');
 				if (UTC) {
 					return moment(date).utc().format(format);
 				}
+				//formato español de fecha
+				moment.locale('es');
 				return moment(date).format(format);
 			}
 			function tick() {
