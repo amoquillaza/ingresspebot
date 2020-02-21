@@ -1,5 +1,6 @@
 token*.js
-
+credentials.json
+*.comm.txt
 lib-cov
 *.seed
 *.log

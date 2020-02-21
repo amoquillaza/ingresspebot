@@ -9,7 +9,7 @@ console.log("Proximos checkpoints:");
 console.log(checkpoints[1].date.toLocaleString("es-MX"));
 for(var i=0;i<checkpoints.length;i++){
 	if(checkpoints[i].classes=='next'||checkpoints[i].classes=='upcoming'||checkpoints[i].classes=='upcoming final'){
-   	   console.log("CP" + (i+1) + ": Fecha: " + checkpoints[i].date + " Hora: " + checkpoints[i].time);
+   	   console.log("CP" + (i+1) + ": " + checkpoints[i].date + " Hora: " + checkpoints[i].time);
 	}
 }
 

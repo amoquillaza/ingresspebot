@@ -3,11 +3,20 @@ const weather = require('weather-js');
 const token = require('./token');
 const septicycl=require('./septicycl');
 const msgFS = require('./msg-fs');
+const dimealgo = require('./dimealgo');
+const fs = require('fs');
+const comando=require('./gsheets');
+
+//inicializar archivos de comandos
+console.log("Iniciando bot. Se inicializar archivos de comandos desde GSheets");
+const { exec } = require('child_process');
+comando.init();
+
 
 //inicializar bot
 const bot = new TelegramBot(token, {polling: true});
 
-const proxfsfecha="2020-02-01";
+const proxfsfecha="2020-03-07";
 const proxfslugar="Por definir";
 const proxeventonombre="Perpetua Hexathlon";
 const proxeventofecha="2020-02-29";
@@ -22,8 +31,8 @@ bot.on('message', function(msg){
  
 if (msg.text.toString().toUpperCase() === "/START"){
     var msgSTART="";
-    msgSTART+="Hola, " + username + " soy un bot y mi nombre es IngressPEBot\n";
-    msgSTART+="Comandos disponibles:\n"+"/evento\n"+"/ciclo\n"+"/fs\n"+"/meme\n"+"/ubicacion\n"+"/tiempo\n";
+    msgSTART+="Hola, " + username + " soy un bot y mi nombre es Kuntur Resistencia Perú.\n";
+    msgSTART+="Comandos disponibles:\n"+"/evento\n"+"/ciclo\n"+"/fs\n"+"/meme\n"+"/dimealgo\n"+"/ubicacion\n"+"/tiempo\n";
 	bot.sendMessage(chatId,msgSTART);
 } else if (msg.text.toString().toUpperCase() === "/EVENTO"){
 	var date_1 = new Date();
@@ -33,19 +42,33 @@ if (msg.text.toString().toUpperCase() === "/START"){
     var msgEVENTO="";  
     bot.sendPhoto(chatId, urlevento);	
 	msgEVENTO+="Datos del proximo evento:\n";
-    msgEVENTO+="Nombre: " + proxeventonombre + " Lugar: " + proxeventolugar + " Fecha: " + proxeventofecha + ". Faltan " + ddhhmmss(diff_in_sec)+"\n";
+// No habrá en Lima
+//    msgEVENTO+="Nombre: " + proxeventonombre + " Lugar: " + proxeventolugar + " Fecha: " + proxeventofecha + ". Faltan " + ddhhmmss(diff_in_sec)+"\n";
+    msgEVENTO+="Nombre: " + proxeventonombre + " Fecha: " + proxeventofecha + ". Faltan " + ddhhmmss(diff_in_sec)+"\n";
     msgEVENTO+="Mas informacion: " + proxeventolink;
 	bot.sendMessage(chatId,msgEVENTO);
 
 } else if (msg.text.toString().toUpperCase() === "/FS"){
+// *** MENSAJE1 mientras cargan mensajes nuevos ***	
 // Se define mensaje para FS
-//	 var date_1 = new Date();
-//   var date_2 = new Date(proxfsfecha);
-//   var diff_in_sec = (date_2 - date_1)/1000;
-//   bot.sendMessage(chatId, "Datos de proximo FS: Fecha: " + proxfsfecha + " Lugar: " + proxfslugar + ". Faltan " + ddhhmmss(diff_in_sec));
-   bot.sendMessage(chatId, msgFS); 
+   var date_1 = new Date();
+   var date_2 = new Date(proxfsfecha);
+   var diff_in_sec = (date_2 - date_1)/1000;
+   bot.sendMessage(chatId, "Datos de proximo FS: Fecha: " + proxfsfecha + " Lugar: " + proxfslugar + ". Faltan " + ddhhmmss(diff_in_sec));
+// *** MENSAJE2 cuando se carga el mensaje msg-fs ***	
+//   bot.sendMessage(chatId, msgFS); 
 } else if (msg.text.toString().toUpperCase() === "/MEME"){
-    bot.sendMessage(chatId, "Con el memero anonimo contactarte debes...");
+     var msgMEME=" "; 	
+     fs.readFile('meme.comm.txt', (err, content) => {
+        if (err) return console.log('Error loading meme.comm file:', err);
+	    var memeFILE=content.toString().split(";");
+	    msgMEME=memeFILE[1]; 
+        bot.sendMessage(chatId, msgMEME);
+     });
+	
+} else if (msg.text.toString().toUpperCase() === "/DIMEALGO"){
+    const msgDIMEALGO=dimealgo.mensajes[Math.floor(Math.random() * dimealgo.mensajes.length)];
+	bot.sendMessage(chatId,msgDIMEALGO);
 	
 } else if (msg.text.toString().toUpperCase() === "/CICLO"){
     const [jsonresponse, hora, fecha] = septicycl.init();
@@ -56,7 +79,7 @@ if (msg.text.toString().toUpperCase() === "/START"){
 	//!!!falta un IF en caso no se reciban datos
     for(var i=0;i<checkpoints.length;i++){
     	if(checkpoints[i].classes=='next'||checkpoints[i].classes=='upcoming'||checkpoints[i].classes=='upcoming final'){
-   	       msgCICLO+="CP" + (i+1) + ": Fecha: " + checkpoints[i].date + " Hora: " + checkpoints[i].time + ".\n";
+   	       msgCICLO+="CP" + (i+1) + ": " + checkpoints[i].date + " Hora: " + checkpoints[i].time + ".\n";
 	    }    
     }
 	bot.sendMessage(chatId,msgCICLO);
