@@ -2,7 +2,8 @@ const TelegramBot = require('node-telegram-bot-api');
 const weather = require('weather-js');
 const token = require('./token');
 const septicycl=require('./septicycl');
-const msgFS = require('./msg-fs');
+//se maneja esta variable desde GSheets, ya no desde archivo local
+//const msgFS = require('./msg-fs');
 const dimealgo = require('./dimealgo');
 const fs = require('fs');
 const comando=require('./gsheets');
@@ -42,21 +43,28 @@ if (msg.text.toString().toUpperCase() === "/START"){
     var msgEVENTO="";  
     bot.sendPhoto(chatId, urlevento);	
 	msgEVENTO+="Datos del proximo evento:\n";
-// No habrá en Lima
-//    msgEVENTO+="Nombre: " + proxeventonombre + " Lugar: " + proxeventolugar + " Fecha: " + proxeventofecha + ". Faltan " + ddhhmmss(diff_in_sec)+"\n";
     msgEVENTO+="Nombre: " + proxeventonombre + " Fecha: " + proxeventofecha + ". Faltan " + ddhhmmss(diff_in_sec)+"\n";
     msgEVENTO+="Mas informacion: " + proxeventolink;
 	bot.sendMessage(chatId,msgEVENTO);
 
 } else if (msg.text.toString().toUpperCase() === "/FS"){
-// *** MENSAJE1 mientras cargan mensajes nuevos ***	
-// Se define mensaje para FS
-   var date_1 = new Date();
-   var date_2 = new Date(proxfsfecha);
-   var diff_in_sec = (date_2 - date_1)/1000;
-   bot.sendMessage(chatId, "Datos de proximo FS: Fecha: " + proxfsfecha + " Lugar: " + proxfslugar + ". Faltan " + ddhhmmss(diff_in_sec));
-// *** MENSAJE2 cuando se carga el mensaje msg-fs ***	
-//   bot.sendMessage(chatId, msgFS); 
+// Se define mensaje por default para FS
+   let msgFS='Pronto novedades sobre el próximo FS.';
+// Se carga mensaje desde archivo para FS
+   fs.readFile('fs.comm.txt', (err, content) => {
+        if (err) return console.log('Error loading fs.comm file:', err);
+	    let fsFILE=content.toString().split(";");
+		let adicFS=fsFILE[2];
+		let fechaFS = new Date(adicFS);
+		let fechaHOY = new Date();
+		// Se añade un día para que el mensaje permanezca más tiempo
+		if(24<(fechaHOY - fechaFS)/86400000){
+            let msgFSfile=fsFILE[1];
+            bot.sendMessage(chatId, msgFSfile);
+		}else{
+            bot.sendMessage(chatId, msgFS);			
+		}
+   });
 } else if (msg.text.toString().toUpperCase() === "/MEME"){
      var msgMEME=" "; 	
      fs.readFile('meme.comm.txt', (err, content) => {

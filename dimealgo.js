@@ -17,6 +17,9 @@ const mensajes = ["¡Hola! soy KunturBot y quiero ser tu amigo.",
 "Mmm, deberías cambiar las contraseñas de tus redes sociales, están muy sencillas de obtener...",
 "Comando recibido. Borrando la carpeta /system32... ¡Ah no! ¡Eso es en Windows!",
 "No joven, no insista. No tenemos relación ni conocemos a los de 'La Resistencia Salsera del Callao'.",
+"No es volador, es un héroe incomprendido por la crítica mediática.",
+"Que soy legal, no todos los voladores somos feiks...",
+"Agente Badchy, cancelar nuevos memes, repito, cancelar nuevos memes. Nos descubrieron. No es un simulacro. Repito: Esto no es un simulacro.",
 "Ahorita no joven."
 ]
 exports.mensajes=mensajes;
