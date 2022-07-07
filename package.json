@@ -22,7 +22,7 @@
   "dependencies": {
     "cron": "^1.8.2",
     "googleapis": "^39.2.0",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "node-telegram-bot-api": "^0.40.0",
     "text-to-picture": "^1.0.0",
     "weather-js": "^2.0.0"
